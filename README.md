@@ -23,7 +23,9 @@ build目录是对webpack的一些配置文件 定义的一些方法
 
 src目录是开发代码目录
 
-components是各种组件的存放地址
+base目录是基础组件库的存放地址
+
+components是业务组件库的存放地址
 
 router 是路由定义文件
 
