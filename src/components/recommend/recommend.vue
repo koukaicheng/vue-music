@@ -1,7 +1,7 @@
 <template>
  <div class="recommend">
    <div class="recommend-content">
-     <div class="slider-wrapper">
+     <div v-if="recommends.length" class="slider-wrapper">
        <slider>
          <div v-for="item in recommends">
            <a :href="item.linkUrl">
@@ -12,7 +12,12 @@
      </div>
      <div class="recommend-list">
        <h1 class="list-title">热门歌单推荐</h1>
-       <ul></ul>
+       <ul>
+         <li v-for="item in disclist" class="item">
+          <img width class>
+         </li>
+         <div class=""></div>
+       </ul>
      </div>
    </div>
  </div>
@@ -20,23 +25,32 @@
 
 <script type="text/ecmascript-6">
 import Slider from 'base/slider'
-import {getRecommend} from 'api/recommend'
+import {getRecommend, getDiscList} from 'api/recommend'
 import {ERR_OK} from 'api/config'
 export default {
   data() {
     return {
-      recommends: []
+      recommends: [],
+      disclist: []
     }
   },
   created() {
     this._getRecommend()
+    this._getDiscList()
   },
   methods: {
     _getRecommend() {
       getRecommend().then((res) => {
         if (res.code === ERR_OK) {
-          console.log(res.data.slider)
+//          console.log(res.data.slider)
           this.recommends = res.data.slider
+        }
+      })
+    },
+    _getDiscList() {
+      getDiscList().then((res) => {
+        if (res.code === ERR_OK) {
+          this.disclist = res.data.list
         }
       })
     }
