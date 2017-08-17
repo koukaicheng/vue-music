@@ -1,11 +1,12 @@
 <template>
  <div class="recommend">
-   <div class="recommend-content">
+   <scroll ref="scroll" class="recommend-content" :data="disclist">
+    <div>
      <div v-if="recommends.length" class="slider-wrapper">
        <slider>
          <div v-for="item in recommends">
            <a :href="item.linkUrl">
-             <img :src="item.picUrl" alt="">
+             <img @load="loadimg" :src="item.picUrl" alt="">
            </a>
          </div>
        </slider>
@@ -13,18 +14,26 @@
      <div class="recommend-list">
        <h1 class="list-title">热门歌单推荐</h1>
        <ul>
-         <li v-for="item in disclist" class="item">
-          <img width class>
+          <li v-for="item in disclist" class="item">
+         <div class="icon">
+            <img width="60" height="60" :src="item.imgurl">
+         </div>
+          <div class="text">
+            <h2 class="name" v-html="item.creator.name"></h2>
+            <p class="desc" v-html="item.dissname"></p>
+        </div>
          </li>
-         <div class=""></div>
+
        </ul>
      </div>
-   </div>
+    </div>
+   </scroll>
  </div>
 </template>
 
 <script type="text/ecmascript-6">
-import Slider from 'base/slider'
+import Slider from 'base/slider/slider'
+import Scroll from 'base/scroll/scroll'
 import {getRecommend, getDiscList} from 'api/recommend'
 import {ERR_OK} from 'api/config'
 export default {
@@ -51,12 +60,21 @@ export default {
       getDiscList().then((res) => {
         if (res.code === ERR_OK) {
           this.disclist = res.data.list
+          console.log(this.disclist)
         }
       })
+    },
+    loadimg() {
+//      设置一个标志 让这个方法只执行一次
+      if (!this.kkc) {
+        this.$refs.scroll.refresh()
+        this.kkc = true
+      }
     }
   },
   components: {
-    Slider
+    Slider,
+    Scroll
   }
 }
 </script>

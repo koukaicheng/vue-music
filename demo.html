@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+   *{
+     margin: 0;
+     padding: 0;
+   }
+   ul,li{
+     list-style: none;
+   }
+   ul{
+     margin: 50px auto;
+     border:1px solid red;
+     box-sizing: border-box;
+   }
+  .list{
+    display: flex;
+    display: -webkit-flex;
+    box-sizing: border-box;
+    padding: 0 20px 20px 20px;
+    align-items: center;
+  }
+  .left{
+    flex: 0 0 60px;
+    width: 60px;
+    height: 50px;
+    padding-right: 20px;
+    background: red;
+  }
+  .right{
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    line-height: 20px;
+    overflow: hidden;
+  }
+  .right .name{
+    margin-bottom: 10px;
+  }
+  .right .desc{
+    vertical-align: baseline;
+  }
+  </style>
+</head>
+<body>
+  <ul>
+    <li class="list">
+      <div class="left"></div>
+      <div class="right">
+        <h2 class="name">kkc</h2>
+        <p class="desc">kkkkkkkcccccc</p>
+      </div>
+    </li>
+  </ul>  
+</body>
+</html>
