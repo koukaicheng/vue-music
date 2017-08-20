@@ -15,13 +15,16 @@ export function addClass(el, className) {
   el.className = newClass.join(' ')
 }
 
-// export function getData(el, name, val) {
-//   const prefix = 'data-'
-//   if (val) {
-//     return el.setAttribute(prefix + name, val)
-//   }
-//   return el.getAttribute(prefix + name)
-// }
+export function getData(el, name, val) {
+  // console.log(el)
+  const prefix = 'data-'
+  name = prefix + name
+  if (val) {
+    return el.setAttribute(name, val)
+  }
+  // console.log(val)
+  return el.getAttribute(name)
+}
 //
 // let elementStyle = document.createElement('div').style
 //
