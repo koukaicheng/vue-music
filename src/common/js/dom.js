@@ -16,13 +16,14 @@ export function addClass(el, className) {
 }
 
 export function getData(el, name, val) {
-  // console.log(el)
+  // console.log(name)
   const prefix = 'data-'
   name = prefix + name
   if (val) {
+    console.log(val)
     return el.setAttribute(name, val)
   }
-  // console.log(val)
+  // console.log(el.getAttribute(name))
   return el.getAttribute(name)
 }
 //

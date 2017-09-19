@@ -1,12 +1,10 @@
 <template>
- <div>排行</div>
 </template>
 
-<script type="text/ecmascript-6">
-
+  <script type="text/ecmascript-6">
 </script>
 
 
 <style lang="stylus" rel="stylesheet/stylus">
-
+  
 </style>
