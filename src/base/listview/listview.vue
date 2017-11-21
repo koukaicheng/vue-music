@@ -1,10 +1,10 @@
 <template>
-  <scroll class="listview" :data="data" ref="listview"  :probe-type="probeType" :listen-scroll="listenScroll" @scroll="scroll" >
+  <scroll class="listview" :data="data" ref="listview" :probe-type="probeType" :listen-scroll="listenScroll" @scroll="scroll">
     <ul>
-      <li v-for="group in data" class="list-group" ref="listgroup">
+      <li v-for="(group,index) in data" class="list-group" ref="listgroup" :key="index">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li v-for="item in group.items" class="list-group-item">
+          <li v-for="(item,index) in group.items" :key="index" class="list-group-item">
             <img v-lazy="item.avatar" class="avatar">
             <span class="name">{{item.name}}</span>
           </li>
@@ -13,24 +13,32 @@
     </ul>
     <div class="list-shortcut" @touchstart="onShortcutTouchstart" @touchmove.stop.prevent="onShortcutTouchmove">
       <ul>
-        <li v-for="(item, index) in shortcutList" class="item" :data-index="index" ref="index">
+        <li v-for="(item, index) in shortcutList" :key="index" class="item" :data-index="index" ref="index" :class="{'current':currentIndex===index}">
           {{item}}
         </li>
       </ul>
+    </div>
+    <div class="list-fixed" v-show="fixedTitle" ref="fixed">
+      <h1 class="fixed-title">{{fixedTitle}}</h1>
+    </div>
+     <div v-show="!data.length" class="loading-container">
+      <loading></loading>
     </div>
   </scroll>
 </template>
 
 <script type="text/ecmascript-6">
 import Scroll from 'base/scroll/scroll'
+import Loading from 'base/loading/loading'
 import { getData } from 'common/js/dom'
 const HEIGHT = 18
-// const GROUP
+const TITLE_HEIGHT = 30
 export default {
   data() {
     return {
       scrollY: -1,
-      currentIndex: 0
+      currentIndex: 0,
+      diff: -1
     }
   },
   created() {
@@ -50,32 +58,42 @@ export default {
       return this.data.map((item) => {
         return item.title.substring(0, 1)
       })
+    },
+    fixedTitle() {
+      if (this.scrollY > 0) {
+        return ''
+      }
+      return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
     }
   },
   methods: {
     onShortcutTouchstart(e) {
-      // console.log(e.target)
       let index = getData(e.target, 'index')
       let firstTouch = e.touches[0]
       this.touch.y1 = firstTouch.pageY
       this.touch.index = index
       this._scrollTo(index)
-      // console.log(this.$refs.listgroup)
     },
     onShortcutTouchmove(e) {
       let firstTouch = e.touches[0]
-      // console.log(firstTouch)
       this.touch.y2 = firstTouch.pageY
       let dalta = (this.touch.y2 - this.touch.y1) / HEIGHT | 0
       let lastindex = parseInt(this.touch.index) + dalta
-      // console.log(lastindex)
       this._scrollTo(lastindex)
     },
     scroll(pos) {
       this.scrollY = pos.y
-      console.log(pos)
     },
     _scrollTo(index) {
+      if (!index && index !== 0) {
+        return
+      }
+      if (index < 0) {
+        index = 0
+      } else if (index > this.listHeight.length - 2) {
+        index = this.listHeight.length - 2
+      }
+      this.scrollY = -this.listHeight[index]
       this.$refs.listview.scrollToElement(this.$refs.listgroup[index], 0)
     },
     _calculateHeight() {
@@ -91,7 +109,8 @@ export default {
     }
   },
   components: {
-    Scroll
+    Scroll,
+    Loading
   },
   watch: {
     data() {
@@ -100,18 +119,30 @@ export default {
       }, 200)
     },
     scrollY(newy) {
-      // console.log('ccc')
       const listHeight = this.listHeight
-      for (let i = 0; i < listHeight.length; i++) {
+      if (newy > 0) {
+        this.currentIndex = 0
+        return
+      }
+      for (let i = 0; i < listHeight.length-1; i++) {
         let height1 = listHeight[i]
         let height2 = listHeight[i + 1]
-        if (!height2 || (-newy > height1 && -newy < height2)) {
+        if ((-newy >= height1 && -newy < height2)) {
           this.currentIndex = i
-          // console.log(this.currentIndex)
+          this.diff = height2 + newy
           return
         }
-        this.currentIndex = 0
+        this.currentIndex = listHeight.length - 2
       }
+    },
+    diff(newVal) {
+      let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
+      if (this.fixedTop === fixedTop) {
+        return
+      }
+      this.fixedTop = fixedTop
+      console.log(newVal)
+      this.$refs.fixed.style.transform = `translate3D(0,${fixedTop}px,0)`
     }
   }
 }
