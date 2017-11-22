@@ -1,0 +1,1 @@
+export const SET_SINGGER = 'SET_SINGGER'
