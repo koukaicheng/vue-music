@@ -7,54 +7,48 @@ export function addClass(el, className) {
   if (hasClass(el, className)) {
     return
   }
-  // console.log(el.className.split(' '))
   let newClass = el.className.split(' ')
-  // console.log(newClass)
   newClass.push(className)
-  // console.log(newClass)
   el.className = newClass.join(' ')
 }
 
 export function getData(el, name, val) {
-  // console.log(name)
   const prefix = 'data-'
   name = prefix + name
   if (val) {
     console.log(val)
     return el.setAttribute(name, val)
   }
-  // console.log(el.getAttribute(name))
   return el.getAttribute(name)
 }
+
 //
-// let elementStyle = document.createElement('div').style
-//
-// let vendor = (() => {
-//   let transformNames = {
-//     webkit: 'webkitTransform',
-//     Moz: 'MozTransform',
-//     O: 'OTransform',
-//     ms: 'msTransform',
-//     standard: 'transform'
-//   }
-//
-//   for (let key in transformNames) {
-//     if (elementStyle[transformNames[key]] !== undefined) {
-//       return key
-//     }
-//   }
-//
-//   return false
-// })()
-//
-// export function prefixStyle(style) {
-//   if (vendor === false) {
-//     return false
-//   }
-//
-//   if (vendor === 'standard') {
-//     return style
-//   }
-//
-//   return vendor + style.charAt(0).toUpperCase() + style.substr(1)
-// }
+let elementStyle = document.createElement('div').style
+let vendor = (() => {
+  let transformNames = {
+    webkit: 'webkitTransform',
+    Moz: 'MozTransform',
+    O: 'OTransform',
+    ms: 'msTransform',
+    standard: 'transform'
+  }
+
+  for (let key in transformNames) {
+    if (elementStyle[transformNames[key]] !== undefined) {
+      return key
+    }
+  }
+
+  return false
+})()
+
+export function prefixStyle(style) {
+  if (vendor === false) {
+    return false
+  }
+
+  if (vendor === 'standard') {
+    return style
+  }
+  return vendor + style.charAt(0).toUpperCase() + style.substr(1)
+}

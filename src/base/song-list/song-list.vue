@@ -4,7 +4,7 @@
       <li v-for="song in songs" class="item">
         <div class="content">
           <h2 class="name">{{song.name}}</h2>
-          <!--<p class="desc">{{getDesc(song)}}</p>-->
+          <p class="desc">{{getDesc(song)}}</p>
         </div>
       </li>
     </ul>
