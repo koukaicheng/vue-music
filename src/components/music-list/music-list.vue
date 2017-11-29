@@ -17,7 +17,7 @@
     <scorll @scroll="scroll" :probe-type="probeType" :listen-scroll="listenScroll" :data="songs" class="list"
             ref="list">
       <div class="song-list-wrapper">
-        <song-list :songs="songs"></song-list>
+        <song-list @slect="slectItem" :songs="songs"></song-list>
       </div>
     </scorll>
   </div>
@@ -26,11 +26,11 @@
 <script type="text/ecmascript-6">
   import Scorll from 'base/scroll/scroll'
   import SongList from 'base/song-list/song-list'
-  import {prefixStyle} from 'common/js/dom'
+  import {prefixStyle, domStyle} from 'common/js/dom'
+  import {mapActions} from 'vuex'
+//  const transform = prefixStyle('transform')
+//  const backdrop = prefixStyle('backdrop-filter')
   const RESERVED_HEIGHT = 40
-  const tranform = prefixStyle('transform')
-  console.log(tranform)
-  const backdrop = prefixStyle('backdrop-filter')
   export default {
     props: {
       bgImage: {
@@ -54,7 +54,6 @@
     created() {
       this.probeType = 3
       this.listenScroll = true
-      console.log(tranform)
     },
     methods: {
       back() {
@@ -62,7 +61,16 @@
       },
       scroll(pos) {
         this.scrollY = pos.y
-      }
+      },
+      slectItem(item, index) {
+        this.selectPlay({
+          list: this.songs,
+          index: index
+        })
+      },
+      ...mapActions([
+        'selectPlay'
+      ])
     },
     watch: {
       scrollY(newY) {
@@ -70,7 +78,7 @@
         let zIndex = 0
         let scale = 1
         let blur = 0
-        this.$refs.layer.style[tranform] = `translate3d(0,${tranlateY}px, 0)`
+        domStyle({"transform": {dom: this.$refs.layer, val: `translate3d(0,${tranlateY}px, 0)`}})
         const percent = Math.abs(newY / this.imageHright)
         if (newY > 0) {
           scale += percent
@@ -78,20 +86,26 @@
         } else {
           blur = Math.min(20 * percent, 20)
         }
-        this.$refs.filter.style[backdrop] = `blur(${blur})`
+        domStyle({"backdrop-filter": {dom: this.$refs.filter, val: `blur(${blur}px)`}})
+        domStyle()
         if (newY < tranlateY) {
           zIndex = 10
-          this.$refs.play.style.display = 'none'
-          this.$refs.bgImage.style.paddingTop = 0
-          this.$refs.bgImage.style.height = `${RESERVED_HEIGHT}px`
+          domStyle({
+            'display': {dom: this.$refs.play, val: 'none'},
+            "paddingTop": {dom: this.$refs.bgImage, val: 0},
+            "height": {dom: this.$refs.bgImage, val: `${RESERVED_HEIGHT}px`}
+          })
         } else {
-          this.$refs.play.style.display = 'block'
-          this.$refs.bgImage.style.paddingTop = '70%'
-          this.$refs.bgImage.style.height = 0
+          domStyle({
+            'display': {dom: this.$refs.play, val: 'block'},
+            "paddingTop": {dom: this.$refs.bgImage, val: '70%'},
+            "height": {dom: this.$refs.bgImage, val: 0}
+          })
         }
-        this.$refs.bgImage.style.zIndex = zIndex
-        this.$refs.bgImage.style[tranform] = `scale(${scale})`
-
+        domStyle({
+          'zIndex': {dom: this.$refs.bgImage, val: zIndex},
+          'transform': {dom: this.$refs.bgImage, val: `scale(${scale})`}
+        })
       }
     },
     mounted() {

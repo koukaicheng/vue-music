@@ -1,1 +1,13 @@
 export const SET_SINGGER = 'SET_SINGGER'
+
+export const SET_PLAYING_SATE = 'SET_PLAYING_SATE'
+
+export const SET_PULL_SCREEN = 'SET_PULL_SCREEN'
+
+export const SET_PLAYLIST = 'SET_PLAYLIST'
+
+export const SET_SEQUENCE_LIST = 'SET_SEQUENCE_LIST'
+
+export const SET_PLAT_MODE = 'SET_PLAT_MODE'
+
+export const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX'

@@ -1,7 +1,7 @@
 <template>
   <div class="song-list">
     <ul>
-      <li v-for="song in songs" class="item">
+      <li @click="selectItem(song,index)" v-for="(song, index) in songs" class="item">
         <div class="content">
           <h2 class="name">{{song.name}}</h2>
           <p class="desc">{{getDesc(song)}}</p>
@@ -9,7 +9,7 @@
       </li>
     </ul>
     <div class="loading-container" v-if="!off">
-      <loading></loading>
+      <loading :title="'加载中，请稍候'"></loading>
     </div>
   </div>
 </template>
@@ -27,20 +27,30 @@
         default: []
       }
     },
-    methods: {
-      getDesc(song) {
-        return `${song.singer} · ${song.albun}`
+    created() {
+      if (this.songs.length > 0) {
+        this.off = true
       }
+    },
+    methods: {
+      selectItem(item, index){
+        this.$emit("slect",item,index)
+      },
+      getDesc(song) {
+        return `${song.singer} · ${song.album}`
+      },
     },
     components: {
       Loading
     },
     watch: {
       songs(val) {
-        if(val.length!==0){
+        if (val.length !== 0) {
           this.off = true
         }
       }
+    },
+    created(){
     }
   }
 </script>

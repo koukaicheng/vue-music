@@ -1,5 +1,6 @@
 <template>
-  <scroll class="listview" :data="data" ref="listview" :probe-type="probeType" :click="false" :listen-scroll="listenScroll"
+  <scroll class="listview" :data="data" ref="listview" :probe-type="probeType" :click="true"
+          :listen-scroll="listenScroll"
           @scroll="scroll">
     <ul>
       <li v-for="(group,index) in data" class="list-group" ref="listgroup" :key="index">
@@ -12,7 +13,8 @@
         </ul>
       </li>
     </ul>
-    <div class="list-shortcut" @touchstart="onShortcutTouchstart" @touchmove.stop.prevent="onShortcutTouchmove">
+    <div class="list-shortcut" @touchend="onShortcutTouchend" @touchstart="onShortcutTouchstart"
+         @touchmove.stop.prevent="onShortcutTouchmove">
       <ul>
         <li v-for="(item, index) in shortcutList" :key="index" class="item" :data-index="index" ref="index"
             :class="{'current':currentIndex===index}">
@@ -25,6 +27,9 @@
     </div>
     <div v-show="!data.length" class="loading-container">
       <loading></loading>
+    </div>
+    <div class="rings" v-show="off">
+      {{text}}
     </div>
   </scroll>
 </template>
@@ -41,7 +46,8 @@
       return {
         scrollY: -1,
         currentIndex: 0,
-        diff: -1
+        diff: -1,
+        off: false
       }
     },
     created() {
@@ -67,6 +73,9 @@
           return ''
         }
         return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
+      },
+      text() {
+        return this.shortcutList[this.currentIndex]
       }
     },
     methods: {
@@ -74,6 +83,7 @@
         this.$emit('select', item)
       },
       onShortcutTouchstart(e) {
+        this.off = true
         let index = getData(e.target, 'index')
         let firstTouch = e.touches[0]
         this.touch.y1 = firstTouch.pageY
@@ -81,11 +91,15 @@
         this._scrollTo(index)
       },
       onShortcutTouchmove(e) {
+        this.off = true
         let firstTouch = e.touches[0]
         this.touch.y2 = firstTouch.pageY
         let dalta = (this.touch.y2 - this.touch.y1) / HEIGHT | 0
         let lastindex = parseInt(this.touch.index) + dalta
         this._scrollTo(lastindex)
+      },
+      onShortcutTouchend() {
+        this.off = false
       },
       scroll(pos) {
         this.scrollY = pos.y
@@ -163,6 +177,20 @@
     height: 100%
     overflow: hidden
     background: $color-background
+    .rings
+      position: absolute
+      top 0
+      left 0
+      bottom 0
+      right 0
+      margin auto
+      width: 60px
+      height: 60px
+      border-radius 50%
+      background rgba(0, 0, 0, .5)
+      font-size 20px
+      line-height: 60px
+      text-align center
     .list-group
       padding-bottom: 30px
       .list-group-title

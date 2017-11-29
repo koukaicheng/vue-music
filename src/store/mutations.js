@@ -10,6 +10,24 @@ const mutations = {
     // }
     // window.localStorage.setItem('SINGER', JSON.stringify(SINGER));
     state.singer = singer
-  }
+  },
+  [types.SET_PLAYING_SATE](state, flag) {
+    state.playing = flag
+  },
+  [types.SET_PULL_SCREEN](state, flag) {
+    state.funllScreen = flag
+  },
+  [types.SET_PLAYLIST](state, list) {
+    state.playList = list
+  },
+  [types.SET_SEQUENCE_LIST](state, list) {
+    state.sequenceList = list
+  },
+  [types.SET_PLAT_MODE](state, mode) {
+    state.mode = mode
+  },
+  [types.SET_CURRENT_INDEX](state, index) {
+    state.currentIndex = index
+  },
 }
 export default mutations

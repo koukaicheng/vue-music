@@ -38,7 +38,6 @@ let vendor = (() => {
       return key
     }
   }
-
   return false
 })()
 
@@ -51,4 +50,11 @@ export function prefixStyle(style) {
     return style
   }
   return vendor + style.charAt(0).toUpperCase() + style.substr(1)
+}
+
+export function domStyle(obj) {
+  for (let item in obj) {
+    let styles = prefixStyle(item)
+    obj[item].dom.style[item] = obj[item].val
+  }
 }
