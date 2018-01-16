@@ -63,6 +63,7 @@
         this.scrollY = pos.y
       },
       slectItem(item, index) {
+         console.log('1')
         this.selectPlay({
           list: this.songs,
           index: index

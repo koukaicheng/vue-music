@@ -8,7 +8,7 @@
         </div>
       </li>
     </ul>
-    <div class="loading-container" v-if="!off">
+    <div class="loading-container" v-show="!off">
       <loading :title="'加载中，请稍候'"></loading>
     </div>
   </div>
@@ -34,6 +34,7 @@
     },
     methods: {
       selectItem(item, index){
+        console.log('0')
         this.$emit("slect",item,index)
       },
       getDesc(song) {
@@ -64,7 +65,7 @@
     .loading-container
       position: absolute
       width: 100%
-      top: 5px
+      top: 200px
       transform: translateY(-50%)
     .item
       display: flex

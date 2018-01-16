@@ -1,79 +1,80 @@
 <template>
   <div class="player" v-show="playList.length>0">
-    <transition name="normal">
-    <div class="normal-player" v-show="funllScreen">
-      <div class="background">
-        <img width="100%" height="100%" :src="currentSong.image"/>
-      </div>
-      <div class="top">
-        <div class="back" @click="back">
-          <i class="icon-back"></i>
+    <transition name="normal" @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leava="afterLeava">
+      <div class="normal-player" v-show="funllScreen">
+        <div class="background">
+          <img width="100%" height="100%" :src="currentSong.image"/>
         </div>
-        <h1 class="title" v-html="currentSong.name"></h1>
-        <h2 class="subtitle" v-html="currentSong.singer"></h2>
-      </div>
-      <div class="middle">
-        <div class="middle-l" ref="middleL">
-          <div class="cd-wrapper" ref="cdWrapper">
-            <div class="cd">
-              <img class="image" :src="currentSong.image"/>
+        <div class="top">
+          <div class="back" @click="back">
+            <i class="icon-back"></i>
+          </div>
+          <h1 class="title" v-html="currentSong.name"></h1>
+          <h2 class="subtitle" v-html="currentSong.singer"></h2>
+        </div>
+        <div class="middle">
+          <div class="middle-l" ref="middleL">
+            <div class="cd-wrapper" ref="cdWrapper">
+              <div class="cd">
+                <img class="image" :src="currentSong.image"/>
+              </div>
+            </div>
+            <div class="playing-lyric-wrapper">
+              <div class="playing-lyric"></div>
             </div>
           </div>
-          <div class="playing-lyric-wrapper">
-            <div class="playing-lyric"></div>
+        </div>
+        <div class="bottom">
+          <div class="dot-wrapper">
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <div class="progress-wrapper">
+            <span class="time time-l"></span>
+            <div class="progress-bar-wrapper">
+            </div>
+            <span class="time time-r"></span>
+          </div>
+          <div class="operators">
+            <div class="icon i-left">
+              <i class="icon-sequence"></i>
+            </div>
+            <div class="icon i-left">
+              <i class="icon-prev"></i>
+            </div>
+            <div class="icon i-center">
+              <i class="icon-play"></i>
+            </div>
+            <div class="icon i-right">
+              <i class="icon-next"></i>
+            </div>
+            <div class="icon i-right">
+              <i class="icon icon-not-favorite"></i>
+            </div>
           </div>
         </div>
       </div>
-      <div class="bottom">
-        <div class="dot-wrapper">
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </div>
-        <div class="progress-wrapper">
-          <span class="time time-l"></span>
-          <div class="progress-bar-wrapper">
-          </div>
-          <span class="time time-r"></span>
-        </div>
-        <div class="operators">
-          <div class="icon i-left">
-            <i class="icon-sequence"></i>
-          </div>
-          <div class="icon i-left">
-            <i class="icon-prev"></i>
-          </div>
-          <div class="icon i-center">
-            <i class="icon-play"></i>
-          </div>
-          <div class="icon i-right">
-            <i class="icon-next"></i>
-          </div>
-          <div class="icon i-right">
-            <i class="icon icon-not-favorite"></i>
-          </div>
-        </div>
-      </div>
-    </div>
     </transition>
     <transition name="mini">
-    <div class="mini-player" v-show="!funllScreen" @click="open">
-      <div class="icon">
-        <img width="40%" height="40%" :src="currentSong.image">
+      <div class="mini-player" v-show="!funllScreen" @click="open">
+        <div class="icon">
+          <img width="40" height="40" :src="currentSong.image">
+        </div>
+        <div class="text">
+          <h2 class="name" v-html="currentSong.name"></h2>
+          <p class="desc" v-html="currentSong.singer"></p>
+        </div>
+        <div class="control"></div>
+        <div class="control">
+          <i class="icon-playlist"></i>
+        </div>
       </div>
-      <div class="text">
-        <h2 class="name" v-html="currentSong.name"></h2>
-        <p class="desc" v-html="currentSong.singer"></p>
-      </div>
-      <div class="control"></div>
-      <div class="control">
-        <i class="icon-playlist"></i>
-      </div>
-    </div>
     </transition>
   </div>
 </template>
 <script type="text/ecmascript-6">
   import {mapGetters, mapMutations} from 'vuex'
+  import animitions from 'create-keyframe-animation'
   export default {
     data() {
       return {}
@@ -91,8 +92,23 @@
       back() {
         this.setFullScreen(false)
       },
-      open(){
+      open() {
         this.setFullScreen(true)
+      },
+      enter(el, done) {
+
+      },
+      afterEnter() {
+      },
+      leave(el, done) {
+      },
+      afterLeava() {
+      },
+      _getPosAAndScale(){
+        const targetWidth = 40
+        const paddingLeft = 40
+        const paddingBottom = 30
+        const paddingTop = 80
       },
       ...mapMutations({
         setFullScreen: 'SET_PULL_SCREEN'

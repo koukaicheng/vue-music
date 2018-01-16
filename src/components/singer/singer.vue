@@ -2,7 +2,7 @@
  <!--歌手组件-->
   <div class="singer">
     <list-view @select="selectSinger" :data="singers"></list-view>
-    <router-view></router-view>
+    <router-view :list="singers"></router-view>
   </div>
 </template>
 
@@ -22,20 +22,19 @@
       }
     },
     created() {
-      this._getSingerList()
+      this._getSingerList();
     },
     methods: {
       selectSinger(item) {
         this.$router.push({
           path: `/singer/${item.id}`
-        })
-        this.setSinger(item)
+        });
+        this.setSinger(item);
       },
       _getSingerList() {
         getSingerList().then((res) => {
           if (res.code === ERR_OK) {
             this.singers = this._normalizeSinger(res.data.list)
-//            console.log(this.singers)
           }
         })
       },
